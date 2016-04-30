@@ -1,10 +1,58 @@
+:root {
+  --main-bg-color: #34495e;
+}
+
 #chat_tools {
 	height: 600px;
-    border: 1px solid rgb(172, 172, 172);
+    /*border: 1px solid rgb(172, 172, 172);*/
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 #tools_menu {
-	height: 200px;
-	background-color: #000;
+	height: 100px;
+    background-color: var(--main-bg-color);
 }
+
+#tools_info {
+	background-color: #ecf0f1;
+    height: 500px;
+}
+
+#contact_list .panel-heading {
+    color: #fff;
+    background-color: #043D5D;
+}
+
+body {
+	background-image: url("../images/sunset.jpeg");
+	background-size: 1366px 768px;
+}
+
+.panel {
+	border: 0px;
+}
+
+.boxdiv {
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.tool_icon{
+	height: 90px;
+	width: 90px;
+	margin-top: 5px;
+    margin-left: 32px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.info_box {
+	height: 500px;
+}
+.info_half {
+	height: 250px;
+	overflow-y:auto
+}
+

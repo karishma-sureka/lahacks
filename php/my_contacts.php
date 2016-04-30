@@ -11,6 +11,8 @@ include_once "functions.inc.php";
         <link rel="stylesheet" href="../css/styles.css">
         <!-- Include Moxtra JavaScript Library -->
         <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+        
         <!-- Initialize Moxtra SDK Object -->
 		<?php
 		$app_login = "SUCCESS";
@@ -52,7 +54,7 @@ include_once "functions.inc.php";
         <div class="container">
             <div class="row" id="contacts">
                 <!-- Container to hold the contact list -->
-                <div class="col-md-2" id="contact_list">
+                <div class="col-md-2 boxdiv" id="contact_list">
                     <?php
                     if ($access_token != ""){
                         show_user_contacts($uid);
@@ -60,15 +62,57 @@ include_once "functions.inc.php";
                     ?>
                 </div>
                 <!-- Container to hold the Chat UI -->
-                <div class="col-md-6" id="chat_container">
+                <div class="col-md-6 boxdiv" id="chat_container">
+
                 </div>
                 <!-- Container to hold the tools section -->
-                <div class="col-md-4" id="chat_tools">
-                    <div id="tools_menu">
-                    </div>
+                <div class="col-md-4 boxdiv" id="chat_tools">
+                        <div id="tools_menu">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div id="sentiment">
+                                            <img id="img_senti" class="tool_icon" src="../images/senti.png"></img>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="news">
+                                            <img id="img_news" class="tool_icon" src="../images/bulb.png"></img>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="translate">
+                                            <img id="img_translate" class="tool_icon" src="../images/translate.png"></img>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </div>
 
-                    <div id="tools_info">
-                    </div>
+                        <div id="tools_info" class="info_box">
+                            <div id="info_senti">
+                                <div id="senti_stats" class="info_half">
+                                </div>
+                                <div id="senti_single" class="info_half">
+                                </div>
+                            </div>
+                            <div id="info_news" class="info_box">
+                                <div id="news_wiki" class="info_half">
+                                    <h1>Some title</h1>
+                                    <p>This is a description of this title and it can be really long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and longand long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and longand long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long.
+                                    </p> 
+                                </div>
+                                <div id="news_bing" class="info_half">
+                                </div>
+                            </div>
+                            <div id="info_translate" class="info_box">
+                                <div id="translate_in" class="info_half">
+                                </div>
+                                <div id="translate_out" class="info_half">
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>            
         </div>
@@ -98,5 +142,6 @@ include_once "functions.inc.php";
         }
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	</body>   
+	    <script src="../js/main.js" id="mainjs"></script>
+    </body>   
 </html>
