@@ -1,0 +1,10 @@
+#chat_tools {
+	height: 600px;
+    border: 1px solid rgb(172, 172, 172);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;
+}
+
+#tools_menu {
+	height: 200px;
+	background-color: #000;
+}
