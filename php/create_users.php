@@ -41,7 +41,7 @@ include_once "config.inc.php";
 
 				    	//Post data to setup/initialize user
 					    $data_string = "client_id=".$CLIENT_ID."&client_secret=".$CLIENT_SECRET."&grant_type=".$USER_INITIALIZE_GRANT_TYPE."&uniqueid=".$uniqueid."&timestamp=".$timestamp."&firstname=".$firstname."&lastname=".$lastname."&pictureurl=".$pictureurl;
-					    $uri = $REST_API_END_POINT."/oauth/token";
+					    $uri = $OAUTH_ENDPOINT_DOMAIN."/oauth/token";
 					    echo "uri: " . $uri;
 					    $ch = curl_init();
 					    curl_setopt($ch, CURLOPT_URL,$uri);
