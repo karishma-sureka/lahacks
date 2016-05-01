@@ -30,7 +30,7 @@ include_once "functions.inc.php";
 		$app_login = "SUCCESS";
 		if ($app_login == "SUCCESS") {
 			$uid = $_REQUEST["uid"];	
-			$access_token = get_access_token($uid);
+			$access_token = "osQzMgAAAVRsVIfaAACowFV0OE9wY3VsbW5uM0FQVXd6cUFRa1NLIAAAAANUM1NydjlubVRNNEFtSUc1dHhVbjlnMWtTSEQ5aFNRSWNr";
 
             $access_token_main = get_access_token("u001");
 
