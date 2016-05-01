@@ -3,7 +3,7 @@ include_once "config.inc.php";
 ?>
 <html>
     <head>
-        <title>Create Users | Quick Chat</title>
+        <title>Create Users For Chatwise</title>
         <meta charset="UTF-8" />
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
