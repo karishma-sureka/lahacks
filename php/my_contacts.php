@@ -33,7 +33,7 @@ include_once "functions.inc.php";
 			$uid = $_REQUEST["uid"];	
 			$access_token = get_access_token($uid);
 
-            $access_token_main = get_access_token("u001");
+            // $access_token_main = get_access_token("u001");
 
 		}
 		?>

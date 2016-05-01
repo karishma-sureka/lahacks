@@ -20,7 +20,7 @@ function show_user_contacts($uid) {
 		    	<li class='list-group-item'>
 	    		<a href="javascript:start_chat('<?php echo $uniqueid;?>');"><?php echo $firstname." ".$lastname; ?></a>
 	    		</li>
-		    	<?
+		    	<?php
 	    	}
 	        $row++;
 	    }
