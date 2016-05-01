@@ -2,7 +2,7 @@
 
 <head>
 	<title> ChatWise </title>
-	<META http-equiv="refresh" content="0;URL=https://chatwise.azurewebsite.net/php/login.php">
+	<META http-equiv="refresh" content="0;URL=https://chatwise.azurewebsites.net/php/login.php">
 
 </head>
 
