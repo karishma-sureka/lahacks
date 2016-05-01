@@ -1,8 +1,8 @@
 
 $( document ).ready(function() {
-    console.log("DOC Ready");    
+    console.log("DOC Ready");
 
-    $("#info_news").show();
+    $("#info_senti").show();
 
 
 
