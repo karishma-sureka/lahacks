@@ -28,6 +28,9 @@ include_once "functions.inc.php";
 		if ($app_login == "SUCCESS") {
 			$uid = $_REQUEST["uid"];	
 			$access_token = get_access_token($uid);
+
+            $access_token_main = get_access_token("u001");
+
 		}
 		?>
         <script type="text/javascript">
@@ -152,7 +155,26 @@ include_once "functions.inc.php";
                     console.log(event.message + " " + event.binder_id);
                 },
                 receive_feed: function (event) {
-                    console.log(event.message + " " + event.binder_id);
+
+                    // alert("Receiver"+ event.message + " " + event.binder_id + " auth token: " + "<?php echo $access_token ?>");
+
+                    var message = event.message.split(":")[1].trim();
+                    alert("new_message: " + message+ " binder_id: " + event.binder_id );
+
+
+                    var URL =  "http://apisandbox.moxtra.com/v1/" + event.binder_id + "/conversations?access_token="+"<?php echo $access_token_main; ?>";
+                    console.log(URL);
+                    $.ajax({
+                        type: "GET",
+                        url: URL,
+                        contentType: "application/json",
+                        success: function (binder) {
+                            var docs = JSON.stringify(binder.data);
+                            var jsonData = JSON.parse(docs);
+                            console.log("success: " + jsonData);
+                            
+                        }
+                    });
                 },
                 error: function(event) {
                     console.log("Chat error code: " + event.error_code + " error message: " + event.error_message);
