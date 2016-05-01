@@ -4,11 +4,12 @@ include_once "functions.inc.php";
 ?>
 <html>
     <head>
-        <title>My Contacts | Quick Chat</title>
+        <title>chatwise - know what you're talking about</title>
         <meta charset="UTF-8" />
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/styles.css">
+        <link rel="icon" href="http://i.imgur.com/O23Y9m8.png" type="image/png" />
         <!-- Include Moxtra JavaScript Library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         
@@ -62,7 +63,7 @@ include_once "functions.inc.php";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Quick Chat</a>
+              <a class="navbar-brand" href="#"><img id="cw_img" src="../images/cw.png"></img>chatwise</a>
             </div>
           </div>
         </nav>
@@ -174,12 +175,12 @@ include_once "functions.inc.php";
                                 }});
 
                     /*Update news: }else if(mode==1){*/
-                        wiki_title = 
-                        wiki_body = 
-                        wiki_link = 
-                        bing_titles = []
-                        bing_snippets = []
-                        bing_links = []
+                        wiki_title = "";
+                        wiki_body = "";
+                        wiki_link = "";
+                        bing_titles = [];
+                        bing_snippets = [];
+                        bing_links = [];
 
                         $.ajax({url: "https://lahacks-ksureka.c9users.io/info/"+encodeURI(message), success: function(result){
                                     console.log(JSON.stringify(result));
@@ -202,6 +203,7 @@ include_once "functions.inc.php";
                                         news_links = result["news_links"]
 
                                         updateNews();
+                                        generateLivePreview();
                                     }});
                                 }});
                         
@@ -384,6 +386,10 @@ include_once "functions.inc.php";
             var message = $("#translate_this").val();
             var outgoing = "<p>"+message+"</p>";
             $("#out-translated-msg").html(outgoing);
+        }
+
+        function generateLivePreview(){
+            $('#info_news a').miniPreview({ prefetch: 'pageload' });
         }
 
         </script>
