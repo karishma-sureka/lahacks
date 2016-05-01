@@ -50,9 +50,63 @@ body {
 
 .info_box {
 	height: 500px;
+	padding: 10px;
+    vertical-align: middle;
+    text-align: justify;
 }
 .info_half {
-	height: 250px;
-	overflow-y:auto
+	height: 225px;
 }
 
+#news_wiki, #news_bing, #translate_in, #translate_out {
+	overflow-y:auto;
+}
+
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 96%;               
+  background-color:#222;
+  height: 1px;
+  opacity: 0.1;
+}
+
+#fillgauge {
+	margin-left: 25px;
+}
+
+#smiley {
+	width: 38%;
+    float: right;
+    margin-top: 25px;
+    margin-right: 27px;
+}
+
+#senti_label {
+	color: rgb(52, 73, 94);
+	text-align: center;
+	font-size: 24px;
+}
+
+
+/* For Donut */
+path.slice{
+	stroke-width:2px;
+}
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+} 
+svg text.percent{
+	fill:white;
+	text-anchor:middle;
+	font-size:12px;
+}
+
+#donut {
+	margin-left: 40px;
+    margin-top: -62px;
+}
