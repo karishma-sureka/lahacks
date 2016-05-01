@@ -44,7 +44,7 @@
 					    	$lastname = $data[2];
 					    	?>
 					    	<option value="<?php echo $uniqueid;?>"><?php echo $firstname." ".$lastname; ?></option>
-					    	<?
+			<?php
 				        $row++;
 				    }
 				    fclose($handle);
