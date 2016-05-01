@@ -14,6 +14,9 @@ include_once "functions.inc.php";
         
         <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
         <script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+        <link href="http://codegena.com/assets/css/image-preview-for-link.css" rel="stylesheet">     
+ 
         
         <!-- Include D3 JavaScript Library -->
         <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
@@ -40,7 +43,7 @@ include_once "functions.inc.php";
                 access_token: "<?php echo $access_token; ?>",
                 invalid_token: function(event) {
                     //Triggered when the access token is expired or invalid
-                    console.log("Access Token expired, please generate a new access token!");
+                    //console.log("Access Token expired, please generate a new access token!");
                 }
             };
             Moxtra.init(options);
@@ -84,17 +87,17 @@ include_once "functions.inc.php";
                                 <tr>
                                     <td>
                                         <div id="sentiment">
-                                            <img id="img_senti" class="tool_icon" src="../images/senti.png"></img>
+                                            <img id="img_senti" class="tool_icon" src="../images/senti.png" onClick="mode=0;"></img>
                                         </div>
                                     </td>
                                     <td>
                                         <div id="news">
-                                            <img id="img_news" class="tool_icon" src="../images/bulb.png" onClick="updateNews();"></img>
+                                            <img id="img_news" class="tool_icon" src="../images/bulb.png" onClick="mode=1;"></img>
                                         </div>
                                     </td>
                                     <td>
                                         <div id="translate">
-                                            <img id="img_translate" class="tool_icon" src="../images/translate.png"></img>
+                                            <img id="img_translate" class="tool_icon" src="../images/translate.png" onClick="mode=2;"></img>
                                         </div>
                                     </td>
                                 </tr>
@@ -106,11 +109,12 @@ include_once "functions.inc.php";
                             <div id="info_senti">
                                 
                                 <div id="senti_single" class="info_half">
-                                    <svg id="fillgauge" width="40%" height="200px" onclick="update_gauges();"></svg>
+                                    <svg id="fillgauge" width="40%" height="200px" onclick="update_gauges(NewValue());"></svg>
                                     <img src="../images/neutral.png" id="smiley"><img/>
                                     <div id="senti_label"><strong>Sentiment meter</strong></div>
                                 </div>
                                 <hr/>
+                                <p id="senti_content"></p>
                                 <div id="senti_stats" class="info_half">
                                 </div>
                                 
@@ -137,6 +141,16 @@ include_once "functions.inc.php";
             </div>            
         </div>
 	    <script type="text/javascript">
+
+        //TODO: Remove tests
+        $.ajax({url: "https://lahacks-ksureka.c9users.io/razor/India", success: function(result){
+            //console.log(JSON.stringify(result));
+            //console.log(encodeURI("Hi my name is"));
+
+        }});
+
+        var mode = 0; //0 for sentiment, 1 for wiki, 2 for translate
+
         function start_chat (contact_id) {
             var chat_options = {
                 unique_id: contact_id,
@@ -146,19 +160,64 @@ include_once "functions.inc.php";
                 iframeheight: "600px",                
                 autostart_note: false,
                 start_chat: function(event) {
-                    console.log("Chat started binder ID: " + event.binder_id);
+                    //console.log("Chat started binder ID: " + event.binder_id);
                 },
                 publish_feed: function(event) {
-                    console.log(event.message + " " + event.binder_id);
+                    //console.log(event.message + " " + event.binder_id);
                 },
                 receive_feed: function (event) {
 
                     // alert("Receiver"+ event.message + " " + event.binder_id + " auth token: " + "<?php echo $access_token ?>");
 
                     var message = event.message.split(":")[1].trim();
-                    alert("new_message: " + message+ " binder_id: " + event.binder_id );
+                    console.log("new_message: " + message+ " binder_id: " + event.binder_id );
+
+                    /*Update sentiment: if(mode==0){*/
+                        $.ajax({url: "https://lahacks-ksureka.c9users.io/sentiment/"+encodeURI(message), success: function(result){
+                                    console.log("Sentiment score: "+result["sentiment"]*100);
+                                    update_gauges(result["sentiment"]*100);
+                                    $("#senti_content").html('<em>"'+message+'"</em>');
+                                }});
+
+                    /*Update news: }else if(mode==1){*/
+                        wiki_title = 
+                        wiki_body = 
+                        wiki_link = 
+                        bing_titles = []
+                        bing_snippets = []
+                        bing_links = []
+
+                        $.ajax({url: "https://lahacks-ksureka.c9users.io/razor/"+encodeURI(message), success: function(result){
+                                    console.log(JSON.stringify(result));
+                                    if(result["name"]==0){
+                                        wiki_title="";
+                                        wiki_body="";
+                                        wiki_link="";
+                                    } else {
+                                        wiki_title = result["name"]
+                                        wiki_body = result["snippet"]
+                                        wiki_link = result["url"]
+                                    }
+                                    $.ajax({url: "https://lahacks-ksureka.c9users.io/news/"+encodeURI(message), success: function(result){
+                                        bing_titles = result["web_titles"]
+                                        bing_snippets = result["web_snippets"]
+                                        bing_links = result["web_links"]
+
+                                        news_titles = result["news_titles"]
+                                        news_snippets = result["news_snippets"]
+                                        news_links = result["news_links"]
+
+                                        updateNews();
+                                    }});
+                                }});
+                        
+                    /*Update translate: }else if(mode==2){*/
+
+                    /*}*/
+                    
 
 
+                    /*
                     var URL =  "http://apisandbox.moxtra.com/v1/" + event.binder_id + "/conversations?access_token="+"<?php echo $access_token_main; ?>";
                     console.log(URL);
                     $.ajax({
@@ -169,12 +228,27 @@ include_once "functions.inc.php";
                             var docs = JSON.stringify(binder.data);
                             var jsonData = JSON.parse(docs);
                             console.log("success: " + jsonData);
+
+                            //TODO: UPDATE CONTENT FOR INFO PANE HERE
+                            if(mode==0){
+                                $.ajax({url: "https://lahacks-ksureka.c9users.io/sentiment/"+encodeURI(message, success: function(result){
+                                    console.log(JSON.stringify(result));
+                                    console.log(encodeURI("Hi my name is"));
+
+
+                                }});
+                                update_gauges()
+                            }else if(mode==1){
+
+                            }else if(mode==2){
+
+                            }
                             
                         }
-                    });
+                    });*/
                 },
                 error: function(event) {
-                    console.log("Chat error code: " + event.error_code + " error message: " + event.error_message);
+                    //console.log("Chat error code: " + event.error_code + " error message: " + event.error_message);
                 }
             };            
             Moxtra.chatView(chat_options);
@@ -199,8 +273,7 @@ include_once "functions.inc.php";
             }
         }
 
-        function update_gauges(){
-            var new_val = NewValue();
+        function update_gauges(new_val){
             hsl_val = (new_val/100.0*120) ^ 0;
             $('g circle').css('fill','hsl('+hsl_val+', 80%, 40%)');
             sentiment_values.push(parseFloat(new_val));
@@ -240,9 +313,9 @@ include_once "functions.inc.php";
 
         function randomData(){
             return [
-            {label:"Positive", value: 1, color:"#27ae60"},
-            {label:"Neutral", value: 1, color:"#3498db"},
-            {label:"Negative", value: 1, color:"#e74c3c"}
+            {label:"Positive", value: 0, color:"#27ae60"},
+            {label:"Neutral", value: 0, color:"#3498db"},
+            {label:"Negative", value: 0, color:"#e74c3c"}
         ];/*salesData.map(function(d){ 
                 return {label:d.label, value:1000*Math.random(), color:d.color};});
 */
@@ -259,7 +332,7 @@ include_once "functions.inc.php";
                     pos+=1;
                 }
             }
-            console.log(pos+" "+neg+" "+neut);
+            //console.log(pos+" "+neg+" "+neut);
             return [
             {label:"Positive", value: pos, color:"#27ae60"},
             {label:"Neutral", value: neut, color:"#3498db"},
@@ -269,24 +342,37 @@ include_once "functions.inc.php";
         }
 
         //Update News from Bing and Wiki
-        var wiki_title = "Some title";
-        var wiki_body = "Some body some body some body some body some body some body some body some body";
-        var wiki_link = "http://www.bing.com";
+        var wiki_title = "";// = "Some title";
+        var wiki_body = "";// = "Some body some body some body some body some body some body some body some body";
+        var wiki_link = "";// = "http://www.bing.com";
 
-        var bing_titles = ["The Hateful Eight", "Some other movie", "Another movie","The Hateful Eight", "Some other movie", "Another movie","The Hateful Eight", "Some other movie", "Another movie"];
-        var bing_snippets = ["It is a good movie", "This is also a good movie", "This isn't bad either","It is a good movie", "This is also a good movie", "This isn't bad either","It is a good movie", "This is also a good movie", "This isn't bad either"];
-        var bing_links = ["http://www.bing.com", "http://www.bing.com", "http://www.bing.com","http://www.bing.com", "http://www.bing.com", "http://www.bing.com","http://www.bing.com", "http://www.bing.com", "http://www.bing.com"];
+        var bing_titles = [];// = ["The Hateful Eight", "Some other movie", "Another movie","The Hateful Eight", "Some other movie", "Another movie","The Hateful Eight", "Some other movie", "Another movie"];
+        var bing_snippets = [];// = ["It is a good movie", "This is also a good movie", "This isn't bad either","It is a good movie", "This is also a good movie", "This isn't bad either","It is a good movie", "This is also a good movie", "This isn't bad either"];
+        var bing_links = [];// = ["http://www.bing.com", "http://www.bing.com", "http://www.bing.com","http://www.bing.com", "http://www.bing.com", "http://www.bing.com","http://www.bing.com", "http://www.bing.com", "http://www.bing.com"];
+        var news_titles = [];
+        var news_snippets = [];
+        var news_links = [];
 
         function updateNews(){
             var wiki_html = '<h1>'+wiki_title+'</h1><p>'+wiki_body+'</p><a href="'+wiki_link+'">Read more</a>';
-            var bing_html = "";
+
+            var bing_html = "<div id='bing_html'>";
             var i;
             for(i = 0; i<bing_titles.length; i++){
-                bing_html = bing_html + '<h3><a href="'+bing_links[i]+'">'+bing_titles[i]+'</a></h1><p>'+bing_snippets[i]+'</p>';
+                bing_html = bing_html + '<h4><a href="'+bing_links[i]+'">'+bing_titles[i]+'</a></h4><p>'+bing_snippets[i]+'</p>';
             }
+            bing_html = bing_html + "</div>"
+
+            var news_html = "<div id='news_html'>";
+            for(i = 0; i<news_titles.length; i++){
+                news_html = news_html + '<h4><a href="'+news_links[i]+'">'+news_titles[i]+'</a></h4><p>'+news_snippets[i]+'</p>';
+            }
+            news_html = news_html + "</div>"
+
             $("#news_wiki").html(wiki_html);
-            $("#news_bing").html(bing_html);
+            $("#news_bing").html(bing_html+news_html);
         }
+
 
         translateIncoming("Este es un mensaje de muestra para fines de demostración.");
         function translateIncoming(message){
@@ -302,5 +388,6 @@ include_once "functions.inc.php";
         }
 
         </script>
+        <script src="http://codegena.com/assets/js/image-preview-for-link.js"></script>
     </body>   
 </html>
