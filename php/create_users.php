@@ -52,8 +52,8 @@ include_once "config.inc.php";
 					    echo "result: ".$result;
 					    $result = json_decode($result, true);
 					    //Get Access Token on Successful Setup & Initialization of the User
-					    $access_token = $result['access_token'];
-
+					    //$access_token = $result['access_token'];
+					    $access_token = "osQzMgAAAVRsVIfaAACowFV0OE9wY3VsbW5uM0FQVXd6cUFRa1NLIAAAAANUM1NydjlubVRNNEFtSUc1dHhVbjlnMWtTSEQ5aFNRSWNr";
 					    if ($access_token != "")
 					    {
 						    echo "<li class='list-group-item'>".$firstname." ".$lastname." <span style='color:green; float:right;'>(Create User Success)</span></li>";
