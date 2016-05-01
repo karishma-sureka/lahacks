@@ -48,6 +48,7 @@ include_once "config.inc.php";
 					    curl_setopt($ch, CURLOPT_POSTFIELDS,$data_string);
 					    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					    $result = curl_exec($ch);
+					    echo "result: ".$result;
 					    $result = json_decode($result, true);
 					    //Get Access Token on Successful Setup & Initialization of the User
 					    $access_token = $result['access_token'];
