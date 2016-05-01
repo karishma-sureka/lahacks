@@ -2,9 +2,6 @@
 $( document ).ready(function() {
     console.log("DOC Ready");
 
-    $('#info_news a').miniPreview({ prefetch: 'pageload' });
-    
-
     $("#info_senti").show();
 
 

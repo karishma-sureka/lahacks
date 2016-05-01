@@ -4,11 +4,12 @@ include_once "functions.inc.php";
 ?>
 <html>
     <head>
-        <title>My Contacts | Quick Chat</title>
+        <title>chatwise - know what you're talking about</title>
         <meta charset="UTF-8" />
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/styles.css">
+        <link rel="icon" href="http://i.imgur.com/O23Y9m8.png" type="image/png" />
         <!-- Include Moxtra JavaScript Library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         
@@ -62,7 +63,7 @@ include_once "functions.inc.php";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Quick Chat</a>
+              <a class="navbar-brand" href="#"><img id="cw_img" src="../images/cw.png"></img>chatwise</a>
             </div>
           </div>
         </nav>
@@ -167,19 +168,19 @@ include_once "functions.inc.php";
                     console.log("new_message: " + message+ " binder_id: " + event.binder_id );
 
                     /*Update sentiment: if(mode==0){*/
-                        $.ajax({url: "https://lahacks-ksureka.c9users.io/sentiment/"+encodeURI(message), success: function(result){
-                                    console.log("Sentiment score: "+result["sentiment"]*100);
-                                    update_gauges(result["sentiment"]*100);
-                                    $("#senti_content").html('<em>"'+message+'"</em>');
-                                }});
+                    $.ajax({url: "https://lahacks-ksureka.c9users.io/sentiment/"+encodeURI(message), success: function(result){
+                                console.log("Sentiment score: "+result["sentiment"]*100);
+                                update_gauges(result["sentiment"]*100);
+                                $("#senti_content").html('<em>"'+message+'"</em>');
+                            }});
 
                     /*Update news: }else if(mode==1){*/
-                        wiki_title = 
-                        wiki_body = 
-                        wiki_link = 
-                        bing_titles = []
-                        bing_snippets = []
-                        bing_links = []
+                        wiki_title = "";
+                        wiki_body = "";
+                        wiki_link = "";
+                        bing_titles = [];
+                        bing_snippets = [];
+                        bing_links = [];
 
                         $.ajax({url: "https://lahacks-ksureka.c9users.io/info/"+encodeURI(message), success: function(result){
                                     console.log(JSON.stringify(result));
@@ -188,22 +189,32 @@ include_once "functions.inc.php";
                                         wiki_body="";
                                         wiki_link="";
                                     } else {
-                                        wiki_title = result["name"]
-                                        wiki_body = result["snippet"]
-                                        wiki_link = result["url"]
+                                        wiki_title = result["name"];
+                                        wiki_body = result["snippet"];
+                                        wiki_link = result["url"];
                                     }
                                     $.ajax({url: "https://lahacks-ksureka.c9users.io/news/"+encodeURI(message), success: function(result){
-                                        bing_titles = result["web_titles"]
-                                        bing_snippets = result["web_snippets"]
-                                        bing_links = result["web_links"]
+                                        bing_titles = result["web_titles"];
+                                        bing_snippets = result["web_snippets"];
+                                        bing_links = result["web_links"];
 
-                                        news_titles = result["news_titles"]
-                                        news_snippets = result["news_snippets"]
-                                        news_links = result["news_links"]
+                                        news_titles = result["news_titles"];
+                                        news_snippets = result["news_snippets"];
+                                        news_links = result["news_links"];
 
                                         updateNews();
+                                        generateLivePreview();
                                     }});
                                 }});
+
+                    $.ajax({url: "https://lahacks-ksureka.c9users.io/translate/"+encodeURI(message), success: function(result){
+                            lang = result["language"];
+                            translated_in = result["translated"];
+                            console.log("Translating " + message);
+                            translateIncoming(message, translated_in);
+                    }});
+
+                        
                         
                     /*Update translate: }else if(mode==2){*/
 
@@ -347,6 +358,11 @@ include_once "functions.inc.php";
         var news_snippets = [];
         var news_links = [];
 
+        //Language default variables
+        var lang = "en";
+        var translated_in = "";
+        var translated_out = "";
+
         function updateNews(){
             var wiki_html;
             if (wiki_body.length>0){
@@ -372,18 +388,22 @@ include_once "functions.inc.php";
             $("#news_bing").html(bing_html+news_html);
         }
 
-
-        translateIncoming("Este es un mensaje de muestra para fines de demostración.");
-        function translateIncoming(message){
-            var translated = "This is a sample message for demonstration purposes.";
+        function translateIncoming(message, translated){
             var incoming = "<div id='original-msg'><h2>Original message:</h2><p>"+message+"</p></div><div id='translated-msg'><h2>Translated message:</h2><p>"+translated+"</p></div>";
             $("#translate_in").html(incoming);
         }
 
         function translateOutgoing(){
             var message = $("#translate_this").val();
-            var outgoing = "<p>"+message+"</p>";
+            $.ajax({url: "https://lahacks-ksureka.c9users.io/translate/"+encodeURI(message+"---"+lang), success: function(result){
+                translated_out = result["translated"];
+            }});
+            var outgoing = "<h3 id='translated_text'>"+translated_out+"</h3>";
             $("#out-translated-msg").html(outgoing);
+        }
+
+        function generateLivePreview(){
+            $('#info_news a').miniPreview({ prefetch: 'parenthover' });
         }
 
         </script>
