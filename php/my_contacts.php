@@ -110,19 +110,13 @@ include_once "functions.inc.php";
                                     <img src="../images/neutral.png" id="smiley"><img/>
                                     <div id="senti_label"><strong>Sentiment meter</strong></div>
                                 </div>
-
-
                                 <hr/>
                                 <div id="senti_stats" class="info_half">
                                 </div>
                                 
                             </div>
                             <div id="info_news" class="info_box">
-                                <div id="news_wiki" class="info_half">
-                                    <h1>Some title</h1>
-                                    <p>This is a description of this title and it can be really long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and longand long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and longand long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long and long.
-                                    </p>
-                                    <a href="http://www.bing.com">Read more</a> 
+                                <div id="news_wiki" class="info_half"> 
                                 </div>
                                 <hr/>
                                 <div id="news_bing" class="info_half">
@@ -133,6 +127,9 @@ include_once "functions.inc.php";
                                 </div>
                                 <hr/>
                                 <div id="translate_out" class="info_half">
+                                    <textarea rows="2" cols="50" id="translate_this" placeholder="Enter message to translate"></textarea>
+                                    <p><input value="Translate" type="submit" id="translate-button" onclick="translateOutgoing();"></p>    
+                                    <div id='out-translated-msg'></div>
                                 </div>
                             </div>
                         </div>
@@ -276,10 +273,34 @@ include_once "functions.inc.php";
         var wiki_body = "Some body some body some body some body some body some body some body some body";
         var wiki_link = "http://www.bing.com";
 
-        var bing_titles = ["The Hateful Eight", "Some other movie", "Another movie"];
-        var bing_snippets = ["It is a good movie", "This is also a good movie", "This isn't bad either"];
-        var bing_links = ["http://www.bing.com", "http://www.bing.com", "http://www.bing.com"];
-        
+        var bing_titles = ["The Hateful Eight", "Some other movie", "Another movie","The Hateful Eight", "Some other movie", "Another movie","The Hateful Eight", "Some other movie", "Another movie"];
+        var bing_snippets = ["It is a good movie", "This is also a good movie", "This isn't bad either","It is a good movie", "This is also a good movie", "This isn't bad either","It is a good movie", "This is also a good movie", "This isn't bad either"];
+        var bing_links = ["http://www.bing.com", "http://www.bing.com", "http://www.bing.com","http://www.bing.com", "http://www.bing.com", "http://www.bing.com","http://www.bing.com", "http://www.bing.com", "http://www.bing.com"];
+
+        function updateNews(){
+            var wiki_html = '<h1>'+wiki_title+'</h1><p>'+wiki_body+'</p><a href="'+wiki_link+'">Read more</a>';
+            var bing_html = "";
+            var i;
+            for(i = 0; i<bing_titles.length; i++){
+                bing_html = bing_html + '<h3><a href="'+bing_links[i]+'">'+bing_titles[i]+'</a></h1><p>'+bing_snippets[i]+'</p>';
+            }
+            $("#news_wiki").html(wiki_html);
+            $("#news_bing").html(bing_html);
+        }
+
+        translateIncoming("Este es un mensaje de muestra para fines de demostración.");
+        function translateIncoming(message){
+            var translated = "This is a sample message for demonstration purposes.";
+            var incoming = "<div id='original-msg'><h2>Original message:</h2><p>"+message+"</p></div><div id='translated-msg'><h2>Translated message:</h2><p>"+translated+"</p></div>";
+            $("#translate_in").html(incoming);
+        }
+
+        function translateOutgoing(){
+            var message = $("#translate_this").val();
+            var outgoing = "<p>"+message+"</p>";
+            $("#out-translated-msg").html(outgoing);
+        }
+
         </script>
     </body>   
 </html>
