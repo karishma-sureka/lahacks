@@ -142,12 +142,6 @@ include_once "functions.inc.php";
         </div>
 	    <script type="text/javascript">
 
-        //TODO: Remove tests
-        $.ajax({url: "https://lahacks-ksureka.c9users.io/razor/India", success: function(result){
-            //console.log(JSON.stringify(result));
-            //console.log(encodeURI("Hi my name is"));
-
-        }});
 
         var mode = 0; //0 for sentiment, 1 for wiki, 2 for translate
 
@@ -168,8 +162,8 @@ include_once "functions.inc.php";
                 receive_feed: function (event) {
 
                     // alert("Receiver"+ event.message + " " + event.binder_id + " auth token: " + "<?php echo $access_token ?>");
-
                     var message = event.message.split(":")[1].trim();
+
                     console.log("new_message: " + message+ " binder_id: " + event.binder_id );
 
                     /*Update sentiment: if(mode==0){*/
@@ -187,7 +181,7 @@ include_once "functions.inc.php";
                         bing_snippets = []
                         bing_links = []
 
-                        $.ajax({url: "https://lahacks-ksureka.c9users.io/razor/"+encodeURI(message), success: function(result){
+                        $.ajax({url: "https://lahacks-ksureka.c9users.io/info/"+encodeURI(message), success: function(result){
                                     console.log(JSON.stringify(result));
                                     if(result["name"]==0){
                                         wiki_title="";
@@ -354,7 +348,12 @@ include_once "functions.inc.php";
         var news_links = [];
 
         function updateNews(){
-            var wiki_html = '<h1>'+wiki_title+'</h1><p>'+wiki_body+'</p><a href="'+wiki_link+'">Read more</a>';
+            var wiki_html;
+            if (wiki_body.length>0){
+                wiki_html = '<h1>'+wiki_title+'</h1><p>'+wiki_body+'</p><a href="'+wiki_link+'">Read more</a>';
+            } else {
+                wiki_html = "<h2>No Wiki records found.</h2>";
+            }
 
             var bing_html = "<div id='bing_html'>";
             var i;

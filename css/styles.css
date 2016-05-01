@@ -175,3 +175,7 @@ hr {
 #news_html h3 a{
 	color: #d35400;
 }
+
+#news_wiki h2 {
+	text-align: center;
+}
